@@ -154,7 +154,53 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin{
 
       int firstIndex = flippedCards[0];
       int secondIndex = flippedCards[1];
+
+      if (cards[firstIndex].symbol == cards[secondIndex].symbol){
+        setState(() {
+          cards[firstIndex].isMatched = true;
+          cards[secondIndex].isMatched = true;
+          matches++;
+        });
+
+        _matchController.forward().then((_){
+          if (mounted) _matchController.reset();
+        });
+
+        if(matches == widget.config.pairs){
+          _showWinDialog();
+        }
+      }
+
+      else{
+        _wrongController.forward().then((_){
+          if (mounted){
+            _wrongController.reset();
+            setState(() {
+              cards[firstIndex].isMatched = false;
+              cards[secondIndex].isMatched = false;
+            });
+          }
+        });
+      }
+
+      if(mounted) {
+        flippedCards.clear();
+        canFlip = true;
+      }
     });
+  }
+
+  String _getGameTime(){
+    if (gameStartTime == null) return'00:00';
+
+    final duration = DateTime.now().difference(gameStartTime!);
+    final minutes = duration.inMinutes.toString().padLeft(2, '0');
+    final seconds = (duration.inSeconds % 60).toString().padLeft(2, '0');
+    return '$minutes:$seconds';
+  }
+
+  void _showWinDialog(){
+
   }
 
   @override
