@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:memory_card_game/models.dart';
 
@@ -91,6 +93,68 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin{
   void _initGame(){
     cards.clear();
     flippedCards.clear();
+    moves = 0;
+    matches = 0;
+    canFlip = true;
+    gameStarted = false;
+    gameStartTime = null;
+
+    List<String> gameSymbols = symbols.take(widget.config.pairs).toList();
+    List<String> cardPairs = [...gameSymbols, ...gameSymbols];
+
+    int totalCards = widget.config.gridSize * widget.config.gridSize;
+    while(cardPairs.length < totalCards){
+      cardPairs.add('⭐');
+    }
+
+    cardPairs.shuffle(Random());
+
+    for (int i = 0; i < totalCards; i++){
+      cards.add(GameCard(id: i, symbol: cardPairs[i]));
+    }
+    setState(() {
+
+    });
+  }
+
+  void _flipCard(int index){
+    if(!canFlip ||
+        cards[index].isFlipped ||
+        cards[index].isMatched ||
+        cards[index].isAnimating ||
+        flippedCards.length>=2) {
+      return;
+    }
+    if(!gameStarted){
+      gameStarted = true;
+      gameStartTime = DateTime.now();
+    }
+
+    setState(() {
+      cards[index].isFlipped = true;
+      cards[index].isAnimating = true;
+      flippedCards.add(index);
+    });
+
+    _flipController.forward().then((_) {
+      _flipController.reset();
+      cards[index].isAnimating = false;
+    });
+
+    if (flippedCards.length == 2) {
+      moves ++;
+      _checkForMatch();
+    }
+  }
+
+  void _checkForMatch (){
+    canFlip= false;
+    Future.delayed(Duration(milliseconds: 600),(){
+      if(!mounted) return;
+
+      int firstIndex = flippedCards[0];
+      int secondIndex = flippedCards[1];
+    });
   }
 
   @override
