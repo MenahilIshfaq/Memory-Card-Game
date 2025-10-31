@@ -40,59 +40,58 @@ class MenuScreen extends StatelessWidget {
             colors: [Color(0xFF16213E), Color(0xFF533483)],
           ),
         ),
-
-        child: SafeArea(child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              margin: EdgeInsets.only(bottom: 60),
-              child: Column(
-                children: [
-                  Text('🧠',style: TextStyle(fontSize: 80),),
-                  SizedBox(height: 20),
-                  Text(
-                    "Memory Master",
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                margin: EdgeInsets.only(bottom: 60),
+                child: Column(
+                  children: [
+                    Text('🧠', style: TextStyle(fontSize: 80)),
+                    SizedBox(height: 20),
+                    Text(
+                      "Memory Master",
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  Text(
-                    "Test your memory skills !",
-                    style: TextStyle(fontSize: 18, color: Colors.white70),
-                  ),
-                ],
+                    Text(
+                      "Test your memory skills !",
+                      style: TextStyle(fontSize: 18, color: Colors.white70),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            
-            Padding(padding: EdgeInsets.symmetric(horizontal: 40),
-            child: Column(
-              children: Difficulty.values.map((difficulty){
-                final config = configs[difficulty]!;
-                return Container(
-                  margin: EdgeInsets.only(bottom: 20),
-                  width: double.infinity,
-                  child: _buildDifficultyButton(
-                    context,
-                    difficulty,
-                    config,
-                  ),
-                );
-              }).toList(),
-            ),
-            ),
-
-            SizedBox(height: 40),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40),
-              child: Text(
-                'Choose your difficulty level',
-                style: TextStyle(fontSize: 20,color: Colors.white70),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 40),
+                child: Column(
+                  children: Difficulty.values.map((difficulty) {
+                    final config = configs[difficulty]!;
+                    return Container(
+                      margin: EdgeInsets.only(bottom: 20),
+                      width: double.infinity,
+                      child: _buildDifficultyButton(
+                        context,
+                        difficulty,
+                        config,
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
-            ),
-          ],
-         ),
+              SizedBox(height: 40),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 40),
+                child: Text(
+                  'Choose your difficulty level',
+                  style: TextStyle(fontSize: 20, color: Colors.white70),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -116,26 +115,48 @@ class MenuScreen extends StatelessWidget {
         break;
     }
 
-    return ElevatedButton(onPressed: () {},
-        style: ElevatedButton.styleFrom(
-          backgroundColor: config.color.withOpacity(0.2),
-          foregroundColor: Colors.white,
-          padding: EdgeInsets.all(20),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-            side: BorderSide(color: config.color,width: 2),
-          ),
-          elevation: 0,
+    return ElevatedButton(
+      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        backgroundColor: config.color.withOpacity(0.2),
+        foregroundColor: Colors.white,
+        padding: EdgeInsets.all(20),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+          side: BorderSide(color: config.color, width: 2),
         ),
-
-        child: Row());
+        elevation: 0,
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: config.color.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(config.icon, size: 30, color: config.color),
+          ),
+          SizedBox(width: 20),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  config.name,
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  description,
+                  style: TextStyle(fontSize: 14, color: Colors.white70),
+                ),
+              ],
+            ),
+          ),
+          Icon(Icons.arrow_forward_ios,color: config.color, size: 20),
+        ],
+      ),
+    );
   }
 }
-
-
-
-
-
-
-
-
