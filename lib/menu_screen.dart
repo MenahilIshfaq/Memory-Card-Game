@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:memory_card_game/game_screen.dart';
 import 'package:memory_card_game/models.dart';
 
 class MenuScreen extends StatelessWidget {
@@ -116,7 +117,9 @@ class MenuScreen extends StatelessWidget {
     }
 
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(context, MaterialPageRoute(builder:(context)=> GameScreen(difficulty: difficulty, config: config) ));
+      },
       style: ElevatedButton.styleFrom(
         backgroundColor: config.color.withOpacity(0.2),
         foregroundColor: Colors.white,
